@@ -130,7 +130,7 @@ These visualizations help understand what words are dominant in each review type
 ## 🧑‍💻 Author
 
 **Your Name**  
-GitHub: Johnson([https://github.com/yourusername](https://github.com/Johnson-123-208))  
-LinkedIn: Johnson Obhalloju([https://www.linkedin.com](https://www.linkedin.com/in/johnson-obhalloju-8747a6320/))
+GitHub: ([Johnson](https://github.com/Johnson-123-208))  
+LinkedIn: ([Johnson](https://www.linkedin.com/in/johnson-obhalloju-8747a6320/))
 
 ---
