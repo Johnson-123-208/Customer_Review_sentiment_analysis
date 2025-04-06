@@ -6,7 +6,7 @@ This project performs sentiment analysis on Amazon product reviews using both tr
 
 ## 🧠 Project Highlights
 
-- 📊 **Dataset**: [Amazon Product Reviews](https://www.kaggle.com/datasets/datafiniti/consumer-reviews-of-amazon-products)
+- 📊 **Dataset**: [Amazon Product Reviews](https://www.kaggle.com/datasets/arhamrumi/amazon-product-reviews)
 - 🧹 **Text Preprocessing**: Lowercasing, punctuation removal, stopword removal, lemmatization
 - 🔍 **Feature Extraction**: TF-IDF Vectorization
 - ⚙️ **Models Used**:
@@ -22,12 +22,10 @@ This project performs sentiment analysis on Amazon product reviews using both tr
 ## 🗂️ Project Structure
 
 ```
-├── amazon_product_reviews.csv       # Dataset
 ├── sentiment_analysis.py            # Main script
 ├── tfidf_vectorizer.joblib          # Saved TF-IDF vectorizer
 ├── sentiment_lr_model.joblib        # Logistic Regression model
 ├── sentiment_svm_model.joblib       # Linear SVM model
-├── bert_sentiment_model.pt          # (Optional) Saved BERT model
 ├── positive_common_words.png        # Visualization for positive reviews
 ├── neutral_common_words.png         # Visualization for neutral reviews
 ├── negative_common_words.png        # Visualization for negative reviews
@@ -84,11 +82,6 @@ python sentiment_analysis.py
 - Accuracy: ~86%
 - Slightly better performance than Logistic Regression
 
-### 🤖 BERT (Optional)
-- Accuracy: ~89% on smaller subset (due to limited resources)
-- Training and evaluation code included but commented out
-
-> Note: BERT model requires more resources and may not run on all machines.
 
 ---
 
@@ -137,7 +130,7 @@ These visualizations help understand what words are dominant in each review type
 ## 🧑‍💻 Author
 
 **Your Name**  
-GitHub: [@yourusername](https://github.com/yourusername)  
-LinkedIn: [Your LinkedIn](https://www.linkedin.com)
+GitHub: Johnson([https://github.com/yourusername](https://github.com/Johnson-123-208))  
+LinkedIn: Johnson Obhalloju([https://www.linkedin.com](https://www.linkedin.com/in/johnson-obhalloju-8747a6320/))
 
 ---
