@@ -22,7 +22,7 @@ This project performs sentiment analysis on Amazon product reviews using both tr
 ## 🗂️ Project Structure
 
 ```
-├── sentiment_analysis.py            # Main script
+├── main.py                          # Main script
 ├── tfidf_vectorizer.joblib          # Saved TF-IDF vectorizer
 ├── sentiment_lr_model.joblib        # Logistic Regression model
 ├── sentiment_svm_model.joblib       # Linear SVM model
@@ -38,7 +38,7 @@ This project performs sentiment analysis on Amazon product reviews using both tr
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/amazon-sentiment-analysis.git
+git clone https://https://github.com/Johnson-123-208/Customer_Review_sentiment_analysis.git
 cd amazon-sentiment-analysis
 ```
 
@@ -57,7 +57,7 @@ nltk.download('wordnet')
 
 4. **Run the analysis**
 ```bash
-python sentiment_analysis.py
+python app.py
 ```
 
 ---
@@ -122,7 +122,7 @@ These visualizations help understand what words are dominant in each review type
 
 ## 📚 References
 
-- Dataset: [Kaggle - Amazon Product Reviews](https://www.kaggle.com/datasets/datafiniti/consumer-reviews-of-amazon-products)
+- Dataset: [Kaggle - Amazon Product Reviews](https://www.kaggle.com/datasets/arhamrumi/amazon-product-reviews)
 - Transformers: [Hugging Face](https://huggingface.co/transformers/)
 
 ---
