@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sentiment Analyzer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg,
+        {% if prediction == 'Positive' %}#00c9a7, #92fe9d
+        {% elif prediction == 'Negative' %}#ff6a6a, #ffb199
+        {% else %}#bdc3c7, #2c3e50{% endif %});
+      animation: fadeIn 1.2s ease-in;
+      color: #fff;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 650px;
+      margin: 90px auto;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(25px);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.4);
+      text-align: center;
+
+      {% if prediction == 'Positive' %}
+      animation: glow 2s infinite alternate;
+      {% elif prediction == 'Negative' %}
+      animation: shake 0.4s infinite alternate;
+      {% endif %}
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 15px #00ffbb; }
+      to { box-shadow: 0 0 35px #00ffee; }
+    }
+
+    @keyframes shake {
+      from { transform: translateX(-2px); }
+      to { transform: translateX(2px); }
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 30px;
+      background: linear-gradient(to right, #ffffff, #dddddd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 18px;
+      font-size: 16px;
+      border: none;
+      border-radius: 14px;
+      outline: none;
+      resize: none;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.3);
+      background-color: rgba(255, 255, 255, 0.95);
+      color: #333;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
+      color: #fff;
+      box-shadow: 0 0 12px #38f9d7;
+      transition: transform 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.07);
+    }
+
+    .result {
+      margin-top: 30px;
+      font-size: 24px;
+      font-weight: bold;
+      animation: resultFade 1s ease-in;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    }
+
+    @keyframes resultFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .emoji {
+      font-size: 50px;
+      margin-top: 20px;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .bubbles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      width: 80px;
+      height: 80px;
+      background:
+        {% if prediction == 'Positive' %}rgba(0, 255, 170, 0.6)
+        {% elif prediction == 'Negative' %}rgba(255, 100, 100, 0.6)
+        {% else %}rgba(255, 255, 255, 0.45){% endif %};
+      border-radius: 50%;
+      animation: rise 25s infinite ease-in;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
+
+    .sparkle-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.9;
+      animation: sparkle 1.2s ease-out forwards;
+    }
+
+    @keyframes sparkle {
+      0% { transform: scale(0.2); opacity: 1; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+
+    /* Loading Spinner */
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      display: none;
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #38f9d7;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1.5s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Chatbot */
+    .chatbot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 14px;
+      padding: 16px;
+      color: #fff;
+      font-size: 14px;
+      z-index: 1000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      animation: bounce 2s infinite;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- LOADING OVERLAY -->
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- CHATBOT -->
+  <div class="chatbot">
+    🤖 Need help? Just type a review and click Analyze!
+  </div>
+
+  {% if prediction == 'Positive' %}
+  <div class="sparkle-container">
+    {% for i in range(30) %}
+      <div class="sparkle" style="
+        top: {{ (i * 7) % 100 }}vh;
+        left: {{ (i * 13) % 100 }}vw;
+        animation-delay: {{ (i * 0.2)|round(2) }}s;
+        background: hsl({{ (i * 30) % 360 }}, 100%, 75%);"></div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="bubbles">
+    {% for i in range(20) %}
+      <div class="bubble" style="
+        left: {{ (i * 5 + 10) % 100 }}%;
+        animation-delay: {{ (i * 1.1)|round(2) }}s;
+        animation-duration: {{ 22 + (i % 5) }}s;"></div>
+    {% endfor %}
+  </div>
+
+  <div class="container">
+    <h1>Sentiment Analyzer</h1>
+    <form method="POST" action="/predict" onsubmit="showLoading()">
+      <textarea name="review" placeholder="Write your review here..."></textarea><br>
+      <button type="submit">Analyze Sentiment</button>
+    </form>
+
+    {% if prediction %}
+      <div class="result">
+        {% if prediction == 'Positive' %}
+          ✨ Awesome! Positive Vibes! ✨
+        {% elif prediction == 'Negative' %}
+          😞 Oops! It's Negative.
+        {% else %}
+          😐 It's Neutral, not too bad.
+        {% endif %}
+        <br><br>
+        Predicted Sentiment:
+        <span style="color:
+          {% if prediction == 'Positive' %}#00ffbb
+          {% elif prediction == 'Negative' %}#ff4c4c
+          {% else %}#f4e542{% endif %};">
+          {{ prediction }}
+        </span>
+        <div class="emoji">
+          {% if prediction == 'Positive' %}🥳{% elif prediction == 'Negative' %}😡{% else %}😐{% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    function showLoading() {
+      document.getElementById('loading').style.display = 'flex';
+    }
+  </script>
+
+</body>
+</html>
