@@ -12,10 +12,10 @@ This project performs sentiment analysis on Amazon product reviews using both tr
 - ⚙️ **Models Used**:
   - Logistic Regression
   - Linear Support Vector Machine (SVM)
-  - BERT (`bert-base-uncased`) *(optional)*
 - 📈 **Evaluation Metrics**: Accuracy, Confusion Matrix, Classification Report
 - 📉 **Visualizations**: Most common words in each sentiment category
-- 💾 **Model Saving**: Joblib for traditional ML models, PyTorch for BERT
+- 💾 **Model Saving**: Joblib for traditional ML models
+- created Flask application
 
 ---
 
@@ -23,6 +23,7 @@ This project performs sentiment analysis on Amazon product reviews using both tr
 
 ```
 ├── main.py                          # Main script
+├── app.py                           # App Script
 ├── tfidf_vectorizer.joblib          # Saved TF-IDF vectorizer
 ├── sentiment_lr_model.joblib        # Logistic Regression model
 ├── sentiment_svm_model.joblib       # Linear SVM model
