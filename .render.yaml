@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: sentiment-analyzer
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn app:app
+    autoDeploy: true
